@@ -11,7 +11,7 @@
                 "c:/Users/LA/Documents/CSHARP/TEST/arduino/mi_proyecto/include",
                 "c:/Users/LA/Documents/CSHARP/TEST/arduino/mi_proyecto/src",
                 "C:/Users/LA/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "C:/Users/LA/.platformio/packages/framework-arduino-avr/variants/standard",
+                "C:/Users/LA/.platformio/packages/framework-arduino-avr/variants/mega",
                 "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
@@ -25,7 +25,7 @@
                     "c:/Users/LA/Documents/CSHARP/TEST/arduino/mi_proyecto/include",
                     "c:/Users/LA/Documents/CSHARP/TEST/arduino/mi_proyecto/src",
                     "C:/Users/LA/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "C:/Users/LA/.platformio/packages/framework-arduino-avr/variants/standard",
+                    "C:/Users/LA/.platformio/packages/framework-arduino-avr/variants/mega",
                     "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "C:/Users/LA/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
@@ -36,18 +36,18 @@
             },
             "defines": [
                 "PLATFORMIO=60117",
-                "ARDUINO_AVR_UNO",
+                "ARDUINO_AVR_MEGA2560",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
                 "ARDUINO=10808",
-                "__AVR_ATmega328P__",
+                "__AVR_ATmega2560__",
                 ""
             ],
             "cStandard": "gnu11",
             "cppStandard": "gnu++11",
             "compilerPath": "C:/Users/LA/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
             "compilerArgs": [
-                "-mmcu=atmega328p",
+                "-mmcu=atmega2560",
                 ""
             ]
         }
