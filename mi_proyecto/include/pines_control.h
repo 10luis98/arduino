@@ -21,6 +21,9 @@
 #define ENCENDER_PIN_45 (PORTL |= (1 << PL4))
 #define APAGAR_PIN_45 (PORTL &= ~(1 << PL4))
 
+#define LEER_PIN_18 (PIND & (1 << PD3))
+
+
 // Declaración de la función (¡Sin implementación aquí!)
 void configurarPines();
 

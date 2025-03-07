@@ -1,23 +1,10 @@
-
-//en altas rpm se corta algunos cilindros
-// por que lña duracion sobrepasa la rueda del levas 
-//es normal este comportamiento si le coloco a 1 ms la bobina trabaja bien todo 
-
-
 #include <Arduino.h>
 #include "interrupciones.h"
 #include "patron.h"
 #include "pines_control.h"
-
-
 #define PIN_ENTRADA 18
-#define PIN_SALIDA1 7
 
 
-#define LED_PIN     PB4  // Pin 10 está en PB4
-#define LED_ON()    (PORTB |= (1 << LED_PIN))   // Encender LED
-#define LED_OFF()   (PORTB &= ~(1 << LED_PIN))  // Apagar LED
-#define LED_TOGGLE() (PORTB ^= (1 << LED_PIN))  // Alternar LED
 unsigned long tiempoPrevioToogle = 0;  // Variable para controlar el tiempo
 const unsigned long intervaloToogle = 500000;  // Intervalo en microsegundos (500 ms)
 
@@ -62,22 +49,15 @@ void setup() {
 
 void loop() {
 
-
     unsigned long tiempoActualToogle = micros();  // Obtener el tiempo actual
 
     if (tiempoActualToogle - tiempoPrevioToogle >= intervaloToogle) {
         tiempoPrevioToogle = tiempoActualToogle;  // Guardar el tiempo actual
       //  LED_TOGGLE();  // Cambiar el estado del LED
+      
     }
 
- /*          Serial.print(",");
 
-    if ( datosNuevos) {
-        datosNuevos = false;
-        Serial.print(duracionPulsoAlto);
-        Serial.print(",");
-        Serial.println(duracionPulsoBajo);
-    } */
 }
 
 
