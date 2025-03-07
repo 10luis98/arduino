@@ -70,6 +70,8 @@ void detectarFlanco()
         if (estaEnRango(duracionPulsoBajo, patronConvertido[indicePatron] * duracionPulsoAlto, 15))
         {
           //60micro
+          //30con la modificaion
+          ENCENDER_PIN_45;
 
           indicePatron += 2;
 
