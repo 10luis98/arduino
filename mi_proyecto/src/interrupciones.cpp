@@ -44,7 +44,7 @@ void detectarFlanco()
           switch (indicePatron)
           {
           case 3:
-            ENCENDER_PIN_38;
+            ENCENDER_PIN_45;
             break;
           case 5:
             ENCENDER_PIN_38;
@@ -71,7 +71,6 @@ void detectarFlanco()
         {
           //60micro
           //30con la modificaion
-          ENCENDER_PIN_45;
 
           indicePatron += 2;
 
