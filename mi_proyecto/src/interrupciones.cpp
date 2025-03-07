@@ -16,36 +16,35 @@ volatile bool cicloCompleto = false;
 int ledPin = 45;
 volatile bool flanco = true;
 
-
 void detectarFlanco()
 {
 
-
+  // 5micro
   unsigned long tiempoActual = micros();
   bool estadoActual = LEER_PIN_18;
-  if (estadoActual == flanco) 
+  if (estadoActual == flanco)
   {
 
-
+    // 8micro
     datosNuevos = true;
     duracionPulsoBajo = tiempoActual - tiempoInicioBajo;
     tiempoInicio = tiempoActual;
     if (bajada)
     {
+      // 11micro
 
       bajada = false;
-      //wau estop consume 20 microsegundos    no usar modulo
-      //if (indicePatron < tamanoConvertido && indicePatron % 2 == 1)  
       if ((indicePatron & 1) && (indicePatron < tamanoConvertido))
 
       {
+        // 12micro
 
         if (cicloCompleto)
         {
           switch (indicePatron)
           {
           case 3:
-            ENCENDER_PIN_45;
+            ENCENDER_PIN_38;
             break;
           case 5:
             ENCENDER_PIN_38;
@@ -66,8 +65,12 @@ void detectarFlanco()
           iniciarTimer1();
         }
 
+        //16micros
+
         if (estaEnRango(duracionPulsoBajo, patronConvertido[indicePatron] * duracionPulsoAlto, 15))
         {
+          //60micro
+
           indicePatron += 2;
 
           if (indicePatron > 13)
