@@ -1,43 +1,45 @@
-
 #include "interrupciones.h"
 #include "utils.h"
 #include "patron.h" // Agregar esta línea para acceder a patronConvertido y tamanoConvertido
 #include "pines_control.h"
-
 volatile unsigned long tiempoInicio = 0;
 volatile unsigned long tiempoInicioBajo = 0;
 volatile unsigned long duracionPulsoAlto = 0;
 volatile unsigned long duracionPulsoBajo = 0;
 volatile bool datosNuevos = false;
-volatile bool subida = false;
 volatile bool bajada = false;
 volatile int indicePatron = 1;
 volatile unsigned long blk = 0;
-
 volatile bool ledEstado = false;
 volatile bool timerActivo = false;
-
 volatile bool cicloCompleto = false;
 int ledPin = 45;
 volatile bool flanco = true;
 
+
 void detectarFlanco()
 {
 
-  subida = true;
+
   unsigned long tiempoActual = micros();
   bool estadoActual = LEER_PIN_18;
   if (estadoActual == flanco) 
   {
+
+
     datosNuevos = true;
     duracionPulsoBajo = tiempoActual - tiempoInicioBajo;
     tiempoInicio = tiempoActual;
     if (bajada)
     {
-      bajada = false;
 
-      if (indicePatron < tamanoConvertido && indicePatron % 2 == 1)
+      bajada = false;
+      //wau estop consume 20 microsegundos    no usar modulo
+      //if (indicePatron < tamanoConvertido && indicePatron % 2 == 1)  
+      if ((indicePatron & 1) && (indicePatron < tamanoConvertido))
+
       {
+
         if (cicloCompleto)
         {
           switch (indicePatron)

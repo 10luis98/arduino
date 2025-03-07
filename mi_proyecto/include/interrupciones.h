@@ -15,5 +15,6 @@ extern volatile unsigned long blk;
 
 void detectarFlanco();
 void iniciarTimer1();
+void iniciarTimer5();
 
 #endif

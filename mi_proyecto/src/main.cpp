@@ -12,6 +12,10 @@ const unsigned long intervaloToogle = 500000;  // Intervalo en microsegundos (50
 
 
 void setup() {
+
+
+      
+      
     Serial.begin(2000000);
 
     configurarPines(); // Configurar pines como salida
