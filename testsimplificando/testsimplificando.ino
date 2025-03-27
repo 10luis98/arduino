@@ -112,11 +112,11 @@ void detectarDiente() {
         cilindro = 0;
         dienteReferenciaDetectado = false;
       }
+      if (cilindro == 1) tiempoEntreDientes += tiempoAnteriorDiente;
 
-      if (cilindro == 3) {  //cilindro==1 primer diente de la rueda.
-        if (cilindro == 1) tiempoEntreDientes += tiempoAnteriorDiente;
+      if (cilindro == 3) {     //cilindro==1 primer diente de la rueda.
         long avanceRpm = 0;  // si es cero no hay avance por rpm si el valor es 500 se adelanta algo.
-        int avanceFijo = 0;  //avance fijo o inicial .de 0 a 120
+        int avanceFijo = 0;    //avance fijo o inicial .de 0 a 120
         float vance = 1.0 - (avanceFijo / 120.0);
         long tiempoAjustado = (2 + vance) * tiempoEntreDientes - (dwell + avanceRpm);
         if (tiempoAjustado < 0) tiempoAjustado = 0;
