@@ -16,6 +16,7 @@ ISR(TIMER1_COMPA_vect) {
   timerActivo = false;
   PORTE &= ~(1 << PE5);  // Apagar chispa
 }
+
 ISR(TIMER5_COMPA_vect) {
   TCCR5B = 0;  // Apagar Timer5
   TIMSK5 &= ~(1 << OCIE5A);
@@ -51,12 +52,10 @@ void iniciarTimer1(unsigned long tiempoMicrosegundos) {
 
 void iniciarTimer5(unsigned long tiempoMicrosegundos) {
   cli();  // Deshabilitar interrupciones mientras configuramos
-
   TIMSK5 &= ~(1 << OCIE5A);  // Deshabilitar interrupción
   TCCR5A = 0;
   TCCR5B = 0;
   TCNT5 = 0;
-
   // Convertir microsegundos a ticks (1 tick = 0.0625 µs con 16MHz sin prescaler)
   unsigned long ticks = tiempoMicrosegundos * 16;
 
