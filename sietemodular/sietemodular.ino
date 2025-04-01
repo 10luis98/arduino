@@ -1,11 +1,19 @@
 // main.ino
 
-#include "timers.h"
 #include "deteccion.h"
+#include "pines.h"
 
 void setup() {
 
+    // Configurar todos los pines como salida
+    for (int i = 0; i < 6; i++) {
+        configurarSalida(pines[i]);
+    }
 
+    // Iniciar con todos los pines apagados
+    for (int i = 0; i < 6; i++) {
+        apagarPin(pines[i]);
+    }
   
     pinMode(18, INPUT_PULLUP);
     pinMode(3, OUTPUT);
