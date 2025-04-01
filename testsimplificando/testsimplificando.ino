@@ -24,20 +24,7 @@ ISR(TIMER5_COMPA_vect) {
   iniciarTimer1(dwell);  //de 1000us a 7000us
 }
 
-// void iniciarTimer1() {
-//   if (timerActivo) return;
 
-//   TIMSK1 &= ~(1 << OCIE1A);
-//   TCCR1A = 0;
-//   TCCR1B = 0;
-//   TCNT1 = 0;
-
-//   OCR1A = 31999;  // 2 ms de encendido
-
-//   TCCR1B = (1 << WGM12) | (1 << CS10);
-//   TIMSK1 |= (1 << OCIE1A);
-//   timerActivo = true;
-// }
 void iniciarTimer1(unsigned long tiempoMicrosegundos) {
   cli();  // Deshabilitar interrupciones
 
