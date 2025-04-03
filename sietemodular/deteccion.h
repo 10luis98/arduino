@@ -11,6 +11,8 @@ extern volatile bool dienteReferenciaDetectado;
 extern volatile bool flancoDetectado;
 extern volatile int cilindro;
 extern volatile int bobina;
+extern volatile bool enEjecucion;
+
 
 
 void detectarDiente();

@@ -9,7 +9,7 @@ volatile bool flancoDetectado = false;
 volatile int cilindro = 0;
 volatile int bobina = 0;
 volatile long tiempoAjustado = 0;
-
+volatile bool enEjecucion = false;
 
 void detectarDiente() {
   flancoDetectado = true;
@@ -30,33 +30,24 @@ void detectarDiente() {
       }
       if (cilindro == 1) tiempoEntreDientes += tiempoAnteriorDiente;
 
-      bobina = cilindro - 1;
-      int avanceFijo = 0;
-      float vance = 1.0 - (avanceFijo / 120.0);
-      tiempoAjustado = (0 + vance) * tiempoEntreDientes - 4000;
-      if (tiempoAjustado < 0) {
+  if (!enEjecucion) {  // Si no está en ejecución
+    enEjecucion = true;  // Marcar como en ejecución
+    
+    bobina = cilindro - 1;
+    int avanceFijo = 0;
+    float vance = 1.0 - (avanceFijo / 120.0);
+    tiempoAjustado = (0 + vance) * tiempoEntreDientes - 4000;
+    
+    if (tiempoAjustado < 0) {
+      tiempoAjustado = 0;
+      if (true) {
         tiempoAjustado = 0;
-        if (true) {
-          tiempoAjustado = 0;
-        }
       }
-      iniciarTimer5(tiempoAjustado);  // Ajuste de tiempo en base a detección
-      // if (cilindro == 1) {
-      //   bobina = 0;
-      //   int avanceFijo = 0;
-      //   float vance = 1.0 - (avanceFijo / 120.0);
-      //   long tiempoAjustado = (0 + vance) * tiempoEntreDientes - 2000;
-      //   if (tiempoAjustado < 0) tiempoAjustado = 0;
-      //   iniciarTimer5(tiempoAjustado);  // Ajuste de tiempo en base a detección
-      // }
-      // if (cilindro == 2) {
-      //   bobina = 1;
-      //   int avanceFijo = 0;
-      //   float vance = 1.0 - (avanceFijo / 120.0);
-      //   long tiempoAjustado = (0 + vance) * tiempoEntreDientes - 2000;
-      //   if (tiempoAjustado < 0) tiempoAjustado = 0;
-      //   iniciarTimer5(tiempoAjustado);  // Ajuste de tiempo en base a detección
-      // }
+    }
+    
+    iniciarTimer5(tiempoAjustado);  // Ajuste de tiempo en base a detección
+  }
+      
     }
   }
   tiempoAnteriorDiente = tiempoEntreDientes;

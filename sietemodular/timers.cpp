@@ -6,7 +6,6 @@
 volatile bool timerActivo = false;
 
 void iniciarTimer1(unsigned long tiempoMicrosegundos) {
-  cli();                     // Deshabilitar interrupciones
   TIMSK1 &= ~(1 << OCIE1A);  // Deshabilitar interrupción Timer1
   TCCR1A = 0;                // Limpiar configuraciones anteriores
   TCCR1B = 0;
@@ -25,11 +24,9 @@ void iniciarTimer1(unsigned long tiempoMicrosegundos) {
     TCCR1B = (1 << WGM12) | (1 << CS12);  // Prescaler 256
   }
   TIMSK1 |= (1 << OCIE1A);  // Habilitar interrupción Timer1
-  sei();                    // Habilitar interrupciones globales
 }
 
 void iniciarTimer5(unsigned long tiempoMicrosegundos) {
-  cli();                     // Deshabilitar interrupciones
   TIMSK5 &= ~(1 << OCIE5A);  // Deshabilitar interrupción Timer5
   TCCR5A = 0;                // Limpiar configuraciones anteriores
   TCCR5B = 0;
@@ -47,7 +44,6 @@ void iniciarTimer5(unsigned long tiempoMicrosegundos) {
     TCCR5B = (1 << WGM52) | (1 << CS52) | (1 << CS50);  // Prescaler 1024
   }
   TIMSK5 |= (1 << OCIE5A);  // Habilitar interrupción Timer5
-  sei();                    // Habilitar interrupciones globales
 }
 
 ISR(TIMER1_COMPA_vect) {
@@ -56,6 +52,8 @@ ISR(TIMER1_COMPA_vect) {
   timerActivo = false;
   apagarPin(pines[bobina]);  // Apagar pin
                         //PORTE &= ~(1 << PE5);  // Apagar chispa
+                            enEjecucion = false;  // Marcar como no en ejecución cuando termine
+
 }
 
 ISR(TIMER5_COMPA_vect) {
@@ -65,4 +63,5 @@ ISR(TIMER5_COMPA_vect) {
   encenderPin(pines[bobina]);     // Encender pin
   //PORTE |= (1 << PE5);  // Encender chispa
   iniciarTimer1(1000);  // Ejemplo de tiempo de encendido
+
 }
