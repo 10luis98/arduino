@@ -14,7 +14,8 @@
 volatile unsigned long monitor1 = 0;
 volatile unsigned long monitor2 = 0;
 volatile unsigned long tiempoControl = 0;
-
+volatile unsigned long divPrescaler = 4;
+volatile unsigned long avanceRpm = 0;
 
 volatile unsigned long tiempoReferenciaAnterior = 0;
 volatile unsigned long algo = 0;
@@ -46,7 +47,6 @@ volatile int cilindro = 0;
 volatile bool dienteReferenciaDetectado = false;
 
 volatile unsigned int tiempo_encendido = 2000;  // microsegundo
-volatile unsigned int tiempo_espera = 2500;     // valor inicial en ticks
 
 void setup() {
   Serial.begin(115200);
@@ -67,32 +67,13 @@ void setup() {
   pinMode(19, INPUT_PULLUP);
 
 
-  // TIMSK3 &= ~((1 << OCIE3A) | (1 << OCIE3B) | (1 << OCIE3C));
-  //TIMSK4 &= ~((1 << OCIE4A) | (1 << OCIE4B) | (1 << OCIE4C));
+TCCR3A = 0;
+TCCR3B = (1 << CS31) | (1 << CS30);  // Prescaler 64
+TCNT3 = 0;
 
-
-  //cli();  // Deshabilitar interrupciones globales
-
-  // Timer3 - BOBINAS 1 a 3
-  TCCR3A = 0;
-  TCCR3B = (1 << CS31) | (1 << CS30);  // Prescaler 64
-
-  TCNT3 = 0;
-
-
-  //TIMSK3 = (1 << OCIE3A) | (1 << OCIE3B) | (1 << OCIE3C);
-
-  // Timer4 - BOBINAS 4 a 6
-  TCCR4A = 0;
-  TCCR4B = (1 << CS41) | (1 << CS40);  // Prescaler 64
-
-  TCNT4 = 0;
-
-
-  //TIMSK4 = (1 << OCIE4A) | (1 << OCIE4B) | (1 << OCIE4C);
-
-
-  //sei();  // Habilitar interrupciones globales
+TCCR4A = 0;
+TCCR4B = (1 << CS41) | (1 << CS40);  // Prescaler 64
+TCNT4 = 0;
 
   attachInterrupt(digitalPinToInterrupt(19), detectarDiente, RISING);  // Flanco ascendente
 }
@@ -174,13 +155,13 @@ void detectarDiente() {
 ISR(TIMER3_COMPA_vect) {
   if (bobina1_primera_vez) {
     bobina1_primera_vez = false;
-    OCR3A = TCNT3 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR3A = TCNT3 + ((tiempoEntreDientes-avanceRpm) / divPrescaler) - (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina1_encendida) {
     digitalWrite(BOBINA1, HIGH);
     bobina1_encendida = true;
-    OCR3A = TCNT3 + (tiempo_encendido / 4);
+    OCR3A = TCNT3 + (tiempo_encendido / divPrescaler);
   } else {
     digitalWrite(BOBINA1, LOW);
     bobina1_encendida = false;
@@ -192,13 +173,13 @@ ISR(TIMER3_COMPB_vect) {
 
   if (bobina2_primera_vez) {
     bobina2_primera_vez = false;
-    OCR3B = TCNT3 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR3B = TCNT3 + ((tiempoEntreDientes-avanceRpm) / divPrescaler) - (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina2_encendida) {
     digitalWrite(BOBINA2, HIGH);
     bobina2_encendida = true;
-    OCR3B = TCNT3 + (tiempo_encendido / 4);
+    OCR3B = TCNT3 + (tiempo_encendido / divPrescaler);
   } else {
     digitalWrite(BOBINA2, LOW);
     bobina2_encendida = false;
@@ -210,13 +191,13 @@ ISR(TIMER3_COMPB_vect) {
 ISR(TIMER3_COMPC_vect) {
   if (bobina3_primera_vez) {
     bobina3_primera_vez = false;
-    OCR3C = TCNT3 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR3C = TCNT3 + ((tiempoEntreDientes-avanceRpm) / divPrescaler)- (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina3_encendida) {
     digitalWrite(BOBINA3, HIGH);
     bobina3_encendida = true;
-    OCR3C = TCNT3 + (tiempo_encendido / 4);
+    OCR3C = TCNT3 + (tiempo_encendido / divPrescaler);
   } else {
     digitalWrite(BOBINA3, LOW);
     bobina3_encendida = false;
@@ -230,13 +211,13 @@ ISR(TIMER4_COMPA_vect) {
 
   if (bobina4_primera_vez) {
     bobina4_primera_vez = false;
-    OCR4A = TCNT4 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR4A = TCNT4 + ((tiempoEntreDientes-avanceRpm) / divPrescaler) - (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina4_encendida) {
     digitalWrite(BOBINA4, HIGH);
     bobina4_encendida = true;
-    OCR4A = TCNT4 + (tiempo_encendido / 4);
+    OCR4A = TCNT4 + (tiempo_encendido / divPrescaler);
   } else {
     digitalWrite(BOBINA4, LOW);
     bobina4_encendida = false;
@@ -249,13 +230,13 @@ ISR(TIMER4_COMPB_vect) {
 
   if (bobina5_primera_vez) {
     bobina5_primera_vez = false;
-    OCR4B = TCNT4 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR4B = TCNT4 + ((tiempoEntreDientes-avanceRpm) / divPrescaler) - (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina5_encendida) {
     digitalWrite(BOBINA5, HIGH);
     bobina5_encendida = true;
-    OCR4B = TCNT4 + (tiempo_encendido / 4);
+    OCR4B = TCNT4 + (tiempo_encendido /divPrescaler);
   } else {
     digitalWrite(BOBINA5, LOW);
     bobina5_encendida = false;
@@ -267,13 +248,13 @@ ISR(TIMER4_COMPB_vect) {
 ISR(TIMER4_COMPC_vect) {
   if (bobina6_primera_vez) {
     bobina6_primera_vez = false;
-    OCR4C = TCNT4 + (tiempoEntreDientes / 4) - (tiempo_encendido / 4);
+    OCR4C = TCNT4 + ((tiempoEntreDientes-avanceRpm) / divPrescaler) - (tiempo_encendido / divPrescaler);
     return;
   }
   if (!bobina6_encendida) {
     digitalWrite(BOBINA6, HIGH);
     bobina6_encendida = true;
-    OCR4C = TCNT4 + (tiempo_encendido / 4);
+    OCR4C = TCNT4 + (tiempo_encendido / divPrescaler);
   } else {
     digitalWrite(BOBINA6, LOW);
     bobina6_encendida = false;
@@ -284,16 +265,27 @@ ISR(TIMER4_COMPC_vect) {
 
 void loop() {
   static unsigned long ultimaActualizacion = 0;
-  if (millis() - ultimaActualizacion > 1) {  // Cada 100 ms
+  if (millis() - ultimaActualizacion > 100) {  // Cada 100 ms
     ultimaActualizacion = millis();
     long rpm;  // Usa long para evitar problemas con los float
 
-    if (tiempoCicloMotor > 0) {
+
       rpm = ((60L * 1000000L) / tiempoCicloMotor) * 2;  // µs a RPM con enteros largos
-                                                        //algo = customMap(rpm, 500, 1000, 100, 500);
-                                                        //algo = constrain(algo, 100, 500);  // Limita a entre 1 y 1000
-                                                        //monitor=rpm;
-    }
+                                                        algo = customMap(rpm, 500, 1000, 2000, 5500);
+                                                        algo= constrain(algo, 2000, 5500);  // Limita a entre 1 y 1000
+                                                        avanceRpm=algo;
+                                                      monitor1=algo;
+
+
+                                                      
+      Serial.print("RPM: ");
+      Serial.print(2 * rpm);
+      Serial.print(" | Encendido: ");
+      Serial.print(tiempo_encendido);
+      Serial.print(" | Monitor1: ");
+      Serial.println(monitor1);
+      tiempoCicloMotor=0;
+    
   }
 }
 long customMap(long x, long in_min, long in_max, long out_min, long out_max) {
