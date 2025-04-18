@@ -64,7 +64,6 @@ void setup() {
   pinMode(BOBINA4, OUTPUT);
   pinMode(BOBINA5, OUTPUT);
   pinMode(BOBINA6, OUTPUT);
-
   digitalWrite(BOBINA1, LOW);
   digitalWrite(BOBINA2, LOW);
   digitalWrite(BOBINA3, LOW);
